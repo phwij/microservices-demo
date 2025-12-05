@@ -18,7 +18,7 @@ ARG TARGETARCH
 WORKDIR /src
 
 # restore dependencies
-COPY go.mod go.sum ./
+COPY src/frontend/go.mod src/frontend/go.sum ./
 RUN go mod download
 COPY . .
 
@@ -30,8 +30,8 @@ RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o /go/bin/frontend .
 FROM scratch
 WORKDIR /src
 COPY --from=builder /go/bin/frontend /src/server
-COPY ./templates ./templates
-COPY ./static ./static
+COPY src/frontend/templates ./templates
+COPY src/frontend/static ./static
 
 # Definition of this variable is used by 'skaffold debug' to identify a golang binary.
 # Default behavior - a failure prints a stack trace for the current goroutine.
